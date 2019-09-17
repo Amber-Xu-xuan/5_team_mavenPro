@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+
+
+    <!-- selectPage -->
+    <select id="selectPage" resultType="_goods">
+      select
+        *
+      from goods g where g.price between #{priceGt} and #{priceLte}
+      order by g.price ${upOrdown}
+       limit #{page},#{pageSize}
+    </select>
+
+    <!-- selectPage -->
+    <select id="selectCount" resultType="int">
+      select
+        count(1)
+      from `people` g where g.price between #{priceGt} and #{priceLte}
+    </select>
+    
+    <!-- login -->
+    <select id="login" resultType="_user">
+      select
+        *
+      from people p 
+      
+      left join  `limit` l on   p.phoneNumber = #{phoneNumber} and p.password  =#{password}
+      where l.phoneNumber=p.phoneNumber
+    </select>
+   <!-- 注册 -->
+    <insert id="insertUser" parameterType="_user">
+      insert into `people`(phoneNumber,userName,password) 
+      values(#{phoneNumber},#{userName},#{password})
+    </insert>
+    <insert id="insertLimit" parameterType="_user">
+      insert into `limit`(phoneNumber,role) 
+      values(#{phoneNumber},#{role})
+    </insert>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="order">
+
+	<!-- 生成订单 -->
+    <insert id="insertOrder" parameterType="_order">
+      insert into `order`(orderId,ordTime,orderTel,money,status,ordDayTime,payStatus) 
+      values(#{orderId},#{ordTime},#{orderTel},#{money},#{status},#{ordDayTime},#{payStatus})
+    </insert>
+    <!-- selectAll -->
+    <select id="selectCount" resultType="_order">
+      select
+        *
+      from `order` o where o.orderTel=#{userName} and o.status !=0 order by orderId desc
+    </select>
+    <!-- delete order -->
+    <delete id="delOrder" parameterType="String">
+       delete from `order`  where orderId=#{id}
+    </delete>
+    <!-- 获取订单 -->
+   <select id="selectOrderDetail" resultType="_order">
+     select * from `order`
+   </select>
+   <!-- 统计 每日订单数量和总金额 -->
+   <select id="selectOrderByday" resultType="_orderCountByDay">
+    SELECT  o.ordDayTime as time,COUNT(1) as orderCount, SUM(o.money) as priceTotal from `order` o GROUP BY(o.ordDayTime)
+   </select>
+</mapper>

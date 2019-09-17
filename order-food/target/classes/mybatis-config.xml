@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias type="com.ffcs.bean.Goods" alias="_goods"/>
+		<typeAlias type="com.ffcs.bean.User" alias="_user"/>
+		<typeAlias type="com.ffcs.bean.orderDetail" alias="_orderDetail"/>
+		<typeAlias type="com.ffcs.bean.Order" alias="_order"/>
+		<typeAlias type="com.ffcs.bean.orderDetailByGood" alias="_orderDetailByGood"/>
+		<typeAlias type="com.ffcs.bean.OrderCountByDay" alias="_orderCountByDay"/>
+    </typeAliases>
+    <!-- 引入映射文件 -->
+    <mappers>
+             <mapper resource="goodsMapper.xml"/>
+			 <mapper resource="userMapper.xml"/>
+			  <mapper resource="orderMapper.xml"/>
+			   <mapper resource="orderDetailMapper.xml"/>
+    </mappers>
+</configuration>

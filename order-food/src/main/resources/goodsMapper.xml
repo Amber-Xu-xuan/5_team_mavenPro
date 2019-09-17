@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="goods">
+
+
+    <!-- selectPage -->
+    <select id="selectPage" resultType="_goods">
+      select
+        *
+      from goods g where g.price between #{priceGt} and #{priceLte}
+      order by g.price ${upOrdown}
+       limit #{page},#{pageSize}
+    </select>
+
+    <!-- selectPage -->
+    <select id="selectCount" resultType="int">
+      select
+        count(1)
+      from goods g where g.price between #{priceGt} and #{priceLte}
+    </select>
+    <!-- selectById -->
+    <select id="selectById" resultType="_goods" parameterType="_goods">
+      select
+        *
+      from goods g where 1=1 
+      <if test="goodIds != null">
+        <foreach collection="goodIds" index="index" item="item" separator="," open="AND g.goodId IN (" close=")">
+               ${item}
+        </foreach>
+    </if>
+     
+    </select>
+    <!-- 删除 -->
+    <delete id="delById">
+     		delete from goods  where goodId=#{goodId}
+     </delete>
+     <!-- 添加 -->
+     <insert id="addGood">
+        	insert into goods(goodId,price,introdece,total,img,goodName)  values(#{goodId},#{price},#{introdece},#{total},#{img},#{goodName})
+     </insert>
+     <!-- 修改 -->
+     <update id="editGood">
+       		update goods set price=#{price},introdece=#{introdece},total=#{total},img=#{img},goodName=#{goodName} 
+       		where goodId=#{goodId}
+     </update>
+     <!-- 根据商品查询订单明细 -->
+     <select id="orderDaByGood" resultType="_orderDetailByGood">
+          select g.goodId,g.goodName as goodsName,COUNT(o.orderId) as orderCount,sum(o.goodsNumber) as goodsNum,sum(o.goodsNumber)*g.price as goodsTotalPrice
+		  from `goods` g 
+          LEFT JOIN `orderdetail` o 
+          on g.goodId=o.goodId GROUP BY(g.goodId) 
+      </select>
+</mapper>
